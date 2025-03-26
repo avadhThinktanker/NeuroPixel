@@ -1,95 +1,95 @@
-import { useState, FormEvent, KeyboardEvent } from 'react';
-import { OpenAI } from 'openai';
+import { useState, FormEvent, KeyboardEvent } from "react"
+import { OpenAI } from "openai"
 
 interface CustomImageGenerateParams extends OpenAI.ImageGenerateParams {
   extra_body?: {
-    response_extension: string;
-    width: number;
-    height: number;
-    num_inference_steps: number;
-    seed: number;
-    negative_prompt: string;
-  };
+    response_extension: string
+    width: number
+    height: number
+    num_inference_steps: number
+    seed: number
+    negative_prompt: string
+  }
 }
 
 interface Image {
-  model1: string | null;
-  model2: string | null;
+  model1: string | null
+  model2: string | null
 }
 
 const ImageGenerator: React.FC = () => {
-  const [prompt, setPrompt] = useState<string>('');
-  const [generatedPrompt, setGeneratedPrompt] = useState<string>('');
-  const [images, setImages] = useState<Image>({ model1: null, model2: null });
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
-  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [prompt, setPrompt] = useState<string>("")
+  const [generatedPrompt, setGeneratedPrompt] = useState<string>("")
+  const [images, setImages] = useState<Image>({ model1: null, model2: null })
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [error, setError] = useState<string>("")
+  const [isEditing, setIsEditing] = useState<boolean>(false)
 
   const client = new OpenAI({
-    baseURL: 'https://api.studio.nebius.com/v1/',
+    baseURL: "https://api.studio.nebius.com/v1/",
     apiKey: import.meta.env.VITE_SOME_KEY as string,
     dangerouslyAllowBrowser: true,
-  });
+  })
 
   const MODELS = {
-    model1: 'black-forest-labs/flux-dev',
-    model2: 'stability-ai/sdxl',
-  } as const;
+    model1: "black-forest-labs/flux-dev",
+    model2: "stability-ai/sdxl",
+  } as const
 
   const generateImage = async (model: string): Promise<string> => {
     const completion = await client.images.generate({
       model,
       prompt,
-      response_format: 'url',
+      response_format: "url",
       n: 1,
       extra_body: {
-        response_extension: 'webp',
+        response_extension: "webp",
         width: 512,
         height: 512,
         num_inference_steps: 30,
         seed: -1,
-        negative_prompt: '',
+        negative_prompt: "",
       },
-    } as CustomImageGenerateParams);
-    return completion.data[0].url as string;
-  };
+    } as CustomImageGenerateParams)
+    return completion.data[0].url as string
+  }
 
   const handleGenerateImage = async (
     e: FormEvent<HTMLFormElement> | KeyboardEvent<HTMLTextAreaElement>
   ) => {
-    e.preventDefault();
-    if (!prompt.trim()) return;
+    e.preventDefault()
+    if (!prompt.trim()) return
 
-    setIsLoading(true);
-    setError('');
-    setImages({ model1: null, model2: null });
-    setGeneratedPrompt(prompt);
+    setIsLoading(true)
+    setError("")
+    setImages({ model1: null, model2: null })
+    setGeneratedPrompt(prompt)
 
     try {
       const [url1, url2] = await Promise.all([
         generateImage(MODELS.model1),
         generateImage(MODELS.model2),
-      ]);
+      ])
 
       setImages({
         model1: url1,
         model2: url2,
-      });
+      })
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : String(err);
-      setError('Failed to generate images: ' + errorMessage);
-      console.error(err);
+      const errorMessage = err instanceof Error ? err.message : String(err)
+      setError("Failed to generate images: " + errorMessage)
+      console.error(err)
     } finally {
-      setIsLoading(false);
-      setPrompt('');
-      setIsEditing(false);
+      setIsLoading(false)
+      setPrompt("")
+      setIsEditing(false)
     }
-  };
+  }
 
   const handleEditPrompt = () => {
-    setIsEditing(true);
-    setPrompt(generatedPrompt);
-  };
+    setIsEditing(true)
+    setPrompt(generatedPrompt)
+  }
 
   return (
     <div className="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
@@ -111,9 +111,9 @@ const ImageGenerator: React.FC = () => {
             placeholder="Generate your Image..."
             className="w-full px-3 py-2 text-gray-700 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-y min-h-[100px]"
             onKeyDown={(e) => {
-              if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                handleGenerateImage(e);
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault()
+                handleGenerateImage(e)
               }
             }}
           />
@@ -123,7 +123,7 @@ const ImageGenerator: React.FC = () => {
           className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-300 disabled:bg-indigo-300 disabled:cursor-not-allowed"
           disabled={isLoading || !prompt.trim()}
         >
-          {isLoading ? 'Generating...' : 'Generate Images'}
+          {isLoading ? "Generating..." : "Generate Images"}
         </button>
       </form>
 
@@ -173,7 +173,7 @@ const ImageGenerator: React.FC = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default ImageGenerator;
+export default ImageGenerator
