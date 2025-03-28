@@ -51,7 +51,7 @@ const ImageGenerator: React.FC = () => {
         negative_prompt: "",
       },
     } as CustomImageGenerateParams)
-    return completion.data[0].url as string
+    return completion.data[0].url
   }
 
   const handleGenerateImage = async (
