@@ -53,7 +53,7 @@ const ImageGenerator: React.FC = () => {
     } as CustomImageGenerateParams)
     return completion.data[0].url
   }
-
+  console.log("avadh")
   const handleGenerateImage = async (
     e: FormEvent<HTMLFormElement> | KeyboardEvent<HTMLTextAreaElement>
   ) => {
