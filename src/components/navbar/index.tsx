@@ -1,3 +1,5 @@
+import { UserButton } from "@clerk/clerk-react"
+
 const Navbar = () => {
   return (
     <nav className="bg-gradient-to-r from-indigo-600 to-purple-600 shadow-lg">
@@ -11,10 +13,9 @@ const Navbar = () => {
               </span>
             </a>
           </div>
-
           {/* Desktop Menu */}
           <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-4">
+            <div className="ml-10 flex items-center space-x-4">
               <a className="text-white hover:bg-indigo-500 px-3 py-2 rounded-md text-sm font-medium transition duration-300">
                 Generate
               </a>
@@ -27,6 +28,9 @@ const Navbar = () => {
               <a className="text-white hover:bg-indigo-500 px-3 py-2 rounded-md text-sm font-medium transition duration-300">
                 About
               </a>
+              <div className=" flex items-center">
+                <UserButton afterSignOutUrl="/" />
+              </div>
             </div>
           </div>
         </div>

@@ -4,13 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "tsc -b && vite build",
     "lint": "eslint . --fix",
     "preview": "vite preview",
     "prepare": "husky"
   },
   "dependencies": {
+    "@clerk/clerk-react": "^5.28.2",
+    "@clerk/react-router": "^1.2.7",
     "@tailwindcss/vite": "^4.0.14",
     "@types/react-router-dom": "^5.3.3",
     "openai": "^4.88.0",

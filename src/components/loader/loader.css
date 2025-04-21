@@ -1,0 +1,17 @@
+.loader {
+  width: 25px;
+  height: 25px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 5px solid rgb(180, 189, 192);
+  border-right-color: orange;
+  animation: l2 1s infinite linear;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@keyframes l2 {
+  to {
+    transform: rotate(1turn);
+  }
+}
